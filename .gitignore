@@ -17,7 +17,31 @@ release.properties
 *.iws
 *.ipr
 .DS_Store
+*.class
 
+# Build and test outputs
+*.log
+test-output/
+reports/
+coverage/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Project specific
+screenshots/
+logs/
+downloads/
+
+# Environment files
+.env
+.env.local
+.properties
+
+# Test reports
+test-results/
+surefire-reports/
 # Selenium
 *.log
 test-output/
