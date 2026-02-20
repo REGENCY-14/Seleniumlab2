@@ -1,7 +1,7 @@
 package com.selenium.tests;
 
-import org.testng.Assert;
-import org.testng.annotations.Test;
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  * Sample test class
@@ -12,6 +12,6 @@ public class SampleTest extends BaseTest {
     public void testPageTitle() {
         driver.navigate().to("https://www.google.com");
         String title = driver.getTitle();
-        Assert.assertNotNull(title);
+        assertNotNull(title);
     }
 }
