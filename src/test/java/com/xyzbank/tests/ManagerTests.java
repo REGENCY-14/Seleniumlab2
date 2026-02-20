@@ -121,7 +121,7 @@ public class ManagerTests extends BaseTest {
     @DisplayName("Add Multiple Customers with Valid Data")
     @Story("Customer Management")
     @Description("Parameterized test for adding multiple customers with different valid data")
-    @Severity(SeverityLevel.HIGH)
+    @Severity(SeverityLevel.NORMAL)
     public void testAddMultipleCustomers(String firstName, String lastName, String postalCode) {
         logger.info("Testing add customer with: {}, {}, {}", firstName, lastName, postalCode);
         
@@ -137,7 +137,7 @@ public class ManagerTests extends BaseTest {
     @DisplayName("Create Account for Customer")
     @Story("Account Management")
     @Description("Test creating a new account for an existing customer")
-    @Severity(SeverityLevel.HIGH)
+    @Severity(SeverityLevel.NORMAL)
     public void testCreateAccount() {
         logger.info("Starting test: testCreateAccount");
         
@@ -159,7 +159,7 @@ public class ManagerTests extends BaseTest {
     @DisplayName("Delete Account for Customer")
     @Story("Account Management")
     @Description("Test deleting an account for an existing customer")
-    @Severity(SeverityLevel.HIGH)
+    @Severity(SeverityLevel.NORMAL)
     public void testDeleteAccount() {
         logger.info("Starting test: testDeleteAccount");
         

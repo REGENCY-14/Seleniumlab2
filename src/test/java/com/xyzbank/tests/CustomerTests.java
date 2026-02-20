@@ -70,7 +70,7 @@ public class CustomerTests extends BaseTest {
     @DisplayName("Deposit Money")
     @Story("Transactions")
     @Description("Test depositing positive amount of money to customer account")
-    @Severity(SeverityLevel.HIGH)
+    @Severity(SeverityLevel.NORMAL)
     public void testDeposit() {
         logger.info("Starting test: testDeposit");
         
@@ -97,7 +97,7 @@ public class CustomerTests extends BaseTest {
     @DisplayName("Deposit with Invalid Amount")
     @Story("Transactions")
     @Description("Test that depositing negative or zero amount throws error")
-    @Severity(SeverityLevel.HIGH)
+    @Severity(SeverityLevel.NORMAL)
     public void testDepositInvalidAmount() {
         logger.info("Starting test: testDepositInvalidAmount");
         
@@ -126,7 +126,7 @@ public class CustomerTests extends BaseTest {
     @DisplayName("Withdraw Money")
     @Story("Transactions")
     @Description("Test withdrawing money with sufficient balance")
-    @Severity(SeverityLevel.HIGH)
+    @Severity(SeverityLevel.NORMAL)
     public void testWithdraw() {
         logger.info("Starting test: testWithdraw");
         
@@ -159,7 +159,7 @@ public class CustomerTests extends BaseTest {
     @DisplayName("Withdraw with Insufficient Balance")
     @Story("Transactions")
     @Description("Test that withdrawal with insufficient balance shows error")
-    @Severity(SeverityLevel.HIGH)
+    @Severity(SeverityLevel.NORMAL)
     public void testWithdrawInsufficientBalance() {
         logger.info("Starting test: testWithdrawInsufficientBalance");
         
@@ -184,7 +184,7 @@ public class CustomerTests extends BaseTest {
     @DisplayName("View Transactions")
     @Story("Transaction History")
     @Description("Test viewing transaction history after deposit and withdrawal")
-    @Severity(SeverityLevel.MEDIUM)
+    @Severity(SeverityLevel.NORMAL)
     public void testViewTransactions() {
         logger.info("Starting test: testViewTransactions");
         
@@ -197,7 +197,7 @@ public class CustomerTests extends BaseTest {
 
         // View transactions
         int transactionCount = customerPage.viewTransactions();
-        assertGreaterThanOrEqual(transactionCount, 2, "Should have at least 2 transactions");
+        assertTrue(transactionCount >= 2, "Should have at least 2 transactions");
         
         logger.info("Test passed: Transactions viewed successfully, count: {}", transactionCount);
     }
@@ -239,7 +239,7 @@ public class CustomerTests extends BaseTest {
     @DisplayName("Deposit Various Amounts")
     @Story("Transactions")
     @Description("Parameterized test for depositing various positive amounts")
-    @Severity(SeverityLevel.MEDIUM)
+    @Severity(SeverityLevel.NORMAL)
     public void testDepositVariousAmounts(double amount) {
         logger.info("Testing deposit of amount: {}", amount);
         
@@ -257,7 +257,7 @@ public class CustomerTests extends BaseTest {
     @DisplayName("Transaction History Cannot Be Modified")
     @Story("Transaction History")
     @Description("Verify that transaction history is read-only and cannot be modified")
-    @Severity(SeverityLevel.HIGH)
+    @Severity(SeverityLevel.NORMAL)
     public void testTransactionHistoryReadOnly() {
         logger.info("Starting test: testTransactionHistoryReadOnly");
         
@@ -278,7 +278,7 @@ public class CustomerTests extends BaseTest {
     @DisplayName("Customer Logout")
     @Story("Authentication")
     @Description("Test that customer can successfully logout")
-    @Severity(SeverityLevel.HIGH)
+    @Severity(SeverityLevel.NORMAL)
     public void testLogout() {
         logger.info("Starting test: testLogout");
         

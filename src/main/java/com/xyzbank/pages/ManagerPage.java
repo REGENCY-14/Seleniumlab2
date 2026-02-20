@@ -22,8 +22,8 @@ import java.time.Duration;
  */
 public class ManagerPage {
     private static final Logger logger = LogManager.getLogger(ManagerPage.class);
-    private WebDriver driver;
-    private WebDriverWait wait;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
 
     // Manager interface buttons
     @FindBy(xpath = "//button[contains(text(), 'Add Customer')]")
@@ -72,7 +72,7 @@ public class ManagerPage {
     public ManagerPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        PageFactory.initElements(driver, this);
+        PageFactory.initElements(driver, this);  // Safe - not leaked beyond constructor
         logger.info("ManagerPage initialized");
     }
 

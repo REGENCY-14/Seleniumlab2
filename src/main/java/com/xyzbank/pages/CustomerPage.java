@@ -10,6 +10,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.time.Duration;
 import java.util.List;
+import java.util.ArrayList;
+import org.openqa.selenium.StaleElementReferenceException;
+import org.openqa.selenium.TimeoutException;
 
 /**
  * CustomerPage - Page Object Model for Customer operations
@@ -25,8 +28,8 @@ import java.util.List;
  */
 public class CustomerPage {
     private static final Logger logger = LogManager.getLogger(CustomerPage.class);
-    private WebDriver driver;
-    private WebDriverWait wait;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
 
     // Login elements
     @FindBy(xpath = "//button[contains(text(), 'Customer Login')]")
@@ -69,7 +72,7 @@ public class CustomerPage {
     private WebElement transactionsTable;
 
     @FindBy(xpath = "//table//tr")
-    private List<WebElement> transactionRows;
+    private List<WebElement> transactionRows = new ArrayList<>();
 
     // Alert message
     @FindBy(xpath = "//strong[contains(text(), 'Deposit') or contains(text(), 'Withdraw') or contains(text(), 'insufficient')]")
@@ -83,7 +86,7 @@ public class CustomerPage {
     public CustomerPage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        PageFactory.initElements(driver, this);
+        PageFactory.initElements(driver, this);  // Safe - not leaked beyond constructor
         logger.info("CustomerPage initialized");
     }
 
@@ -211,7 +214,7 @@ public class CustomerPage {
             double balanceValue = Double.parseDouble(balanceText);
             logger.info("Current balance: {}", balanceValue);
             return balanceValue;
-        } catch (Exception e) {
+        } catch (StaleElementReferenceException | TimeoutException e) {
             logger.error("Error getting balance: {}", e.getMessage());
             return 0.0;
         }
