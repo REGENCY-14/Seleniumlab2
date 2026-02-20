@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ManagerTests extends BaseTest {
     
     private ManagerPage managerPage;
-    private static final String BANK_APP_URL = "https://www.globalsqa.com/angularjs-protractor/bankingproject/#/login";
+    private static final String BANK_APP_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
 
     /**
      * Setup before each manager test

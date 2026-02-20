@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CustomerTests extends BaseTest {
     
     private CustomerPage customerPage;
-    private static final String BANK_APP_URL = "https://www.globalsqa.com/angularjs-protractor/bankingproject/#/login";
+    private static final String BANK_APP_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
 
     /**
      * Setup before each customer test
