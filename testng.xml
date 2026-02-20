@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-current.dtd">
+<suite name="Selenium Test Suite" parallel="false">
+    <test name="Selenium Tests">
+        <classes>
+            <!-- Add your test classes here -->
+        </classes>
+    </test>
+</suite>
