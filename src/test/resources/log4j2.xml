@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="log.dir">logs</Property>
+        <Property name="pattern">%d{ISO8601} [%-5p] [%t] %c{1} - %m%n</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Console Appender for immediate output -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+
+        <!-- File Appender for all logs -->
+        <File name="AllLogs" fileName="${log.dir}/all-tests.log" append="false">
+            <PatternLayout pattern="${pattern}"/>
+        </File>
+
+        <!-- File Appender for ERROR level logs -->
+        <File name="ErrorLogs" fileName="${log.dir}/errors.log" append="false">
+            <PatternLayout pattern="${pattern}"/>
+            <Filters>
+                <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+        </File>
+
+        <!-- Rolling File Appender for archived logs -->
+        <RollingFile name="RollingLogs" fileName="${log.dir}/rolling-tests.log" 
+                     filePattern="${log.dir}/%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="10MB"/>
+            </Policies>
+            <DefaultRolloverStrategy max="10"/>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- Root Logger -->
+        <Root level="INFO">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AllLogs"/>
+            <AppenderRef ref="RollingLogs"/>
+        </Root>
+
+        <!-- Selenium Logger -->
+        <Logger name="org.openqa.selenium" level="WARN">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="ErrorLogs"/>
+        </Logger>
+
+        <!-- Application Loggers -->
+        <Logger name="com.xyzbank" level="DEBUG">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="AllLogs"/>
+            <AppenderRef ref="RollingLogs"/>
+        </Logger>
+
+        <!-- Allure Logger -->
+        <Logger name="io.qameta.allure" level="INFO">
+            <AppenderRef ref="AllLogs"/>
+        </Logger>
+
+        <!-- JUnit Logger -->
+        <Logger name="org.junit" level="INFO">
+            <AppenderRef ref="AllLogs"/>
+        </Logger>
+    </Loggers>
+</Configuration>
