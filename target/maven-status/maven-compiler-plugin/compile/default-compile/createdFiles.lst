@@ -1,0 +1,6 @@
+com\selenium\utils\ConfigReader.class
+com\selenium\utils\AllureReporting.class
+com\selenium\pages\CustomerPage.class
+com\selenium\pages\ManagerPage.class
+com\selenium\utils\TestDataReader.class
+com\selenium\pages\LoginPage.class

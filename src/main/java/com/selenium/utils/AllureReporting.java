@@ -47,7 +47,7 @@ public class AllureReporting {
 
         try {
             byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            String filename = String.format("%s_%s.png", screenshotName, LocalDateTime.now().format(DATE_FORMATTER));
+            String filename = "%s_%s.png".formatted(screenshotName, LocalDateTime.now().format(DATE_FORMATTER));
             Allure.addAttachment(filename, "image/png", new ByteArrayInputStream(screenshot), "png");
         } catch (Exception e) {
             System.err.println("Failed to attach screenshot: " + e.getMessage());
@@ -66,7 +66,7 @@ public class AllureReporting {
 
         try {
             byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            String filename = String.format("FAILURE_%s_%s.png", testName, LocalDateTime.now().format(DATE_FORMATTER));
+            String filename = "FAILURE_%s_%s.png".formatted(testName, LocalDateTime.now().format(DATE_FORMATTER));
             Allure.addAttachment(filename, "image/png", new ByteArrayInputStream(screenshot), "png");
         } catch (Exception e) {
             System.err.println("Failed to capture failure screenshot: " + e.getMessage());
@@ -93,7 +93,7 @@ public class AllureReporting {
 
             // Capture screenshot as file
             File sourceFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-            String filename = String.format("%s_%s.png", screenshotName, LocalDateTime.now().format(DATE_FORMATTER));
+            String filename = "%s_%s.png".formatted(screenshotName, LocalDateTime.now().format(DATE_FORMATTER));
             String filepath = SCREENSHOT_DIR + File.separator + filename;
             File destinationFile = new File(filepath);
 

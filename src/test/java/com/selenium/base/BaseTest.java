@@ -5,6 +5,9 @@ import com.selenium.utils.AllureReporting;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -19,10 +22,12 @@ import org.openqa.selenium.chrome.ChromeDriver;
  *
  * @author Test Automation Team
  */
+@ExtendWith(BaseTest.TestFailureWatcher.class)
 public class BaseTest {
 
     protected WebDriver driver;
     protected TestInfo testInfo;
+    private static boolean testFailed = false;
 
     /**
      * Initialize WebDriver before each test.
@@ -33,6 +38,7 @@ public class BaseTest {
     @BeforeEach
     public void setUp(TestInfo testInfo) {
         this.testInfo = testInfo;
+        testFailed = false;
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().window().maximize();
@@ -46,7 +52,7 @@ public class BaseTest {
      */
     @AfterEach
     public void tearDown(TestInfo testInfo) {
-        if (testInfo != null && testInfo.getExecutionException().isPresent()) {
+        if (testFailed) {
             try {
                 String testName = testInfo.getDisplayName();
                 AllureReporting.attachCompleteDebugInfo(driver, testName);
@@ -59,4 +65,13 @@ public class BaseTest {
             driver.quit();
         }
     }
-}
+
+    /**
+     * TestWatcher to track test failures
+     */
+    static class TestFailureWatcher implements TestWatcher {
+        @Override
+        public void testFailed(ExtensionContext context, Throwable cause) {
+            testFailed = true;
+        }
+    }}

@@ -1,0 +1,4 @@
+com\selenium\base\BaseTest$TestFailureWatcher.class
+com\selenium\base\BaseTest.class
+com\selenium\tests\CustomerTests.class
+com\selenium\tests\ManagerTests.class
