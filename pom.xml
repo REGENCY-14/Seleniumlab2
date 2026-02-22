@@ -21,6 +21,7 @@
         <junit.version>5.10.0</junit.version>
         <webdrivermanager.version>5.7.0</webdrivermanager.version>
         <allure.version>2.23.0</allure.version>
+        <jackson.version>2.16.0</jackson.version>
     </properties>
 
     <dependencies>
@@ -58,6 +59,13 @@
             <artifactId>allure-junit5</artifactId>
             <version>${allure.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Jackson for JSON processing -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
     </dependencies>
 
