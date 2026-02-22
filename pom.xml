@@ -61,6 +61,13 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Allure Selenium -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-selenium</artifactId>
+            <version>${allure.version}</version>
+        </dependency>
+
         <!-- Jackson for JSON processing -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
