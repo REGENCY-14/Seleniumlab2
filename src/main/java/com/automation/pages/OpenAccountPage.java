@@ -3,7 +3,7 @@ package com.automation.pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.Select;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
  */
 public class OpenAccountPage {
     
-    private static final Logger logger = LoggerFactory.getLogger(OpenAccountPage.java);
+    private static final Logger logger = LoggerFactory.getLogger(OpenAccountPage.class);
     private WebDriver driver;
     
     @FindBy(xpath = "//button[contains(text(), 'Open Account')]")

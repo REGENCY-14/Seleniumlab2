@@ -2,7 +2,7 @@ package com.automation.tests.customer;
 
 import com.automation.base.SetUp;
 import com.automation.pages.*;
-import com.automation.utils.CustomerData;
+import com.automation.utils.TestDataReader;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -24,6 +24,7 @@ public class TransactionViewTest extends SetUp {
     
     private static final Logger logger = LoggerFactory.getLogger(TransactionViewTest.class);
     private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+    private static final TestDataReader testData = TestDataReader.getInstance();
     
     @Test
     @Story("View Transactions")
@@ -54,9 +55,9 @@ public class TransactionViewTest extends SetUp {
         loginPage.clickCustomerLogin();
         waitForPageLoad();
         
-        logger.info("Step 3: Logging in as {}", CustomerData.TEST_CUSTOMER_NAME);
+        logger.info("Step 3: Logging in as {}", testData.getTestCustomerName());
         CustomerLoginPage customerLoginPage = new CustomerLoginPage(driver);
-        customerLoginPage.loginAsCustomer(CustomerData.TEST_CUSTOMER_NAME);
+        customerLoginPage.loginAsCustomer(testData.getTestCustomerName());
         logger.info("✓ Customer logged in successfully");
     }
     
@@ -64,7 +65,7 @@ public class TransactionViewTest extends SetUp {
     private void createTransaction() {
         logger.info("Step 1: Creating deposit transaction for history");
         DepositPage depositPage = new DepositPage(driver);
-        depositPage.depositAmount(String.valueOf(CustomerData.TEST_TRANSACTION_AMOUNT));
+        depositPage.depositAmount(String.valueOf(testData.getTestTransactionAmount()));
         
         logger.info("Step 2: Accepting confirm alert");
         try {
@@ -79,7 +80,7 @@ public class TransactionViewTest extends SetUp {
         logger.info("Step 1: Accessing Transactions Page");
         TransactionsPage transactionsPage = new TransactionsPage(driver);
         transactionsPage.clickTransactionsTab();
-        waitForPageLoad(1500);
+        waitForPageLoad();
         logger.info("✓ Transaction history loaded");
     }
     

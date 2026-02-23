@@ -1,19 +1,23 @@
 package com.automation.tests.customer;
 
-import com.automation.base.SetUp;
-import com.automation.helpers.PageHelper;
-import com.automation.pages.*;
-import com.automation.utils.CustomerData;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.automation.base.SetUp;
+import com.automation.helpers.PageHelper;
+import com.automation.pages.CustomerDashboardPage;
+import com.automation.pages.CustomerLoginPage;
+import com.automation.pages.DepositPage;
+import com.automation.pages.LoginPage;
+import com.automation.utils.TestDataReader;
+
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * DepositTest - Tests for customer deposit functionality
@@ -25,6 +29,7 @@ public class DepositTest extends SetUp {
     
     private static final Logger logger = LoggerFactory.getLogger(DepositTest.class);
     private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+    private static final TestDataReader testData = TestDataReader.getInstance();
     
     @Test
     @Story("Deposit Money")
@@ -54,9 +59,9 @@ public class DepositTest extends SetUp {
         loginPage.clickCustomerLogin();
         waitForPageLoad();
         
-        logger.info("Step 3: Logging in as {}", CustomerData.TEST_CUSTOMER_NAME);
+        logger.info("Step 3: Logging in as {}", testData.getTestCustomerName());
         CustomerLoginPage customerLoginPage = new CustomerLoginPage(driver);
-        customerLoginPage.loginAsCustomer(CustomerData.TEST_CUSTOMER_NAME);
+        customerLoginPage.loginAsCustomer(testData.getTestCustomerName());
         logger.info("✓ Customer logged in successfully");
     }
     
@@ -65,8 +70,8 @@ public class DepositTest extends SetUp {
         logger.info("Step 1: Accessing Deposit Page");
         DepositPage depositPage = new DepositPage(driver);
         
-        logger.info("Step 2: Depositing amount: ${}", CustomerData.DEPOSIT_AMOUNT);
-        depositPage.depositAmount(String.valueOf(CustomerData.DEPOSIT_AMOUNT));
+        logger.info("Step 2: Depositing amount: ${}", testData.getDepositAmount());
+        depositPage.depositAmount(String.valueOf(testData.getDepositAmount()));
         logger.info("✓ Deposit submitted");
     }
     

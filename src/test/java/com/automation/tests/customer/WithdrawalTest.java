@@ -1,18 +1,22 @@
 package com.automation.tests.customer;
 
-import com.automation.base.SetUp;
-import com.automation.pages.*;
-import com.automation.utils.CustomerData;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.automation.base.SetUp;
+import com.automation.pages.CustomerDashboardPage;
+import com.automation.pages.CustomerLoginPage;
+import com.automation.pages.LoginPage;
+import com.automation.pages.WithdrawalPage;
+import com.automation.utils.TestDataReader;
+
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * WithdrawalTest - Tests for customer withdrawal functionality
@@ -24,6 +28,7 @@ public class WithdrawalTest extends SetUp {
     
     private static final Logger logger = LoggerFactory.getLogger(WithdrawalTest.class);
     private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+    private static final TestDataReader testData = TestDataReader.getInstance();
     
     @Test
     @Story("Withdraw Money")
@@ -53,9 +58,9 @@ public class WithdrawalTest extends SetUp {
         loginPage.clickCustomerLogin();
         waitForPageLoad();
         
-        logger.info("Step 3: Logging in as {}", CustomerData.TEST_CUSTOMER_NAME);
+        logger.info("Step 3: Logging in as {}", testData.getTestCustomerName());
         CustomerLoginPage customerLoginPage = new CustomerLoginPage(driver);
-        customerLoginPage.loginAsCustomer(CustomerData.TEST_CUSTOMER_NAME);
+        customerLoginPage.loginAsCustomer(testData.getTestCustomerName());
         logger.info("✓ Customer logged in successfully");
     }
     
@@ -64,8 +69,8 @@ public class WithdrawalTest extends SetUp {
         logger.info("Step 1: Accessing Withdrawal Page");
         WithdrawalPage withdrawalPage = new WithdrawalPage(driver);
         
-        logger.info("Step 2: Withdrawing amount: ${}", CustomerData.WITHDRAWAL_AMOUNT);
-        withdrawalPage.withdrawAmount(String.valueOf(CustomerData.WITHDRAWAL_AMOUNT));
+        logger.info("Step 2: Withdrawing amount: ${}", testData.getWithdrawalAmount());
+        withdrawalPage.withdrawAmount(String.valueOf(testData.getWithdrawalAmount()));
         logger.info("✓ Withdrawal submitted");
     }
     

@@ -1,12 +1,13 @@
 package com.automation.tests.manager;
 
-import com.automation.base.SetUp;
-import com.automation.pages.*;
-import com.automation.utils.CustomerData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.automation.base.SetUp;
+import com.automation.pages.LoginPage;
+
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;

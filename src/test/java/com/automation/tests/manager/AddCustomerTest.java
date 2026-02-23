@@ -1,18 +1,19 @@
 package com.automation.tests.manager;
 
-import com.automation.base.SetUp;
-import com.automation.pages.*;
-import com.automation.utils.CustomerData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.automation.base.SetUp;
+import com.automation.pages.AddCustomerPage;
+import com.automation.pages.LoginPage;
+import com.automation.utils.TestDataReader;
+
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
 import io.qameta.allure.Story;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * AddCustomerTest - Tests for manager add customer functionality
@@ -24,6 +25,7 @@ public class AddCustomerTest extends SetUp {
     
     private static final Logger logger = LoggerFactory.getLogger(AddCustomerTest.class);
     private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+    private static final TestDataReader testData = TestDataReader.getInstance();
     
     @Test
     @Story("Add Customer")
@@ -60,11 +62,11 @@ public class AddCustomerTest extends SetUp {
         AddCustomerPage addCustomerPage = new AddCustomerPage(driver);
         
         logger.info("Step 2: Adding customer - {} {}", 
-                   CustomerData.NEW_CUSTOMER_FIRST_NAME, 
-                   CustomerData.NEW_CUSTOMER_LAST_NAME);
-        addCustomerPage.addCustomer(CustomerData.NEW_CUSTOMER_FIRST_NAME,
-                                   CustomerData.NEW_CUSTOMER_LAST_NAME,
-                                   CustomerData.NEW_CUSTOMER_POSTAL_CODE);
+                   testData.getNewCustomerFirstName(), 
+                   testData.getNewCustomerLastName());
+        addCustomerPage.addCustomer(testData.getNewCustomerFirstName(),
+                                   testData.getNewCustomerLastName(),
+                                   testData.getNewCustomerPostalCode());
         logger.info("✓ Customer added");
     }
     

@@ -21,5 +21,43 @@
       "postCode": "54321",
       "email": "harry.potter@example.com"
     }
-  ]
+  ],
+  "validCustomers": {
+    "testCustomer": "Harry Potter",
+    "newCustomerFirstName": "John",
+    "newCustomerLastName": "Doe",
+    "newCustomerPostalCode": "12345"
+  },
+  "customerList": [
+    "Harry Potter",
+    "Hermoine Granger",
+    "Ron Weasly"
+  ],
+  "protectedAccounts": [
+    "Harry Potter",
+    "Hermoine Granger",
+    "Ron Weasly"
+  ],
+  "deleteCustomer": {
+    "name": "John"
+  },
+  "validationData": {
+    "invalidPostalCodeSpecialChars": "12@#45",
+    "invalidPostalCodeAlphabetic": "ABC12",
+    "invalidFirstName": "Jo@n",
+    "invalidLastName": "Doe123"
+  },
+  "transactions": {
+    "depositAmount": 500.0,
+    "withdrawalAmount": 100.0,
+    "testTransactionAmount": 250.0
+  },
+  "accounts": {
+    "availableCurrencies": [
+      "Pound",
+      "Dollar",
+      "Rupee"
+    ],
+    "defaultCurrency": "Pound"
+  }
 }

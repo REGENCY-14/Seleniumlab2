@@ -1,13 +1,15 @@
 package com.automation.tests.manager;
 
-import com.automation.base.SetUp;
-import com.automation.pages.*;
-import com.automation.utils.AccountData;
-import com.automation.utils.CustomerData;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.automation.base.SetUp;
+import com.automation.pages.LoginPage;
+import com.automation.pages.OpenAccountPage;
+import com.automation.utils.TestDataReader;
+
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
@@ -23,6 +25,7 @@ public class OpenAccountTest extends SetUp {
     
     private static final Logger logger = LoggerFactory.getLogger(OpenAccountTest.class);
     private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+    private static final TestDataReader testData = TestDataReader.getInstance();
     
     @Test
     @Story("Open Account")
@@ -59,10 +62,10 @@ public class OpenAccountTest extends SetUp {
         OpenAccountPage openAccountPage = new OpenAccountPage(driver);
         
         logger.info("Step 2: Creating account for {} in {}", 
-                   CustomerData.TEST_CUSTOMER_NAME, 
-                   AccountData.DEFAULT_CURRENCY);
-        openAccountPage.createAccount(CustomerData.TEST_CUSTOMER_NAME, 
-                                      AccountData.DEFAULT_CURRENCY);
+                   testData.getTestCustomerName(), 
+                   testData.getDefaultCurrency());
+        openAccountPage.createAccount(testData.getTestCustomerName(), 
+                                      testData.getDefaultCurrency());
         logger.info("✓ Account creation initiated");
     }
     

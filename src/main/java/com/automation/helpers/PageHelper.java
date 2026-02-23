@@ -73,10 +73,11 @@ public class PageHelper {
     /**
      * General wait
      */
-    public static void wait(long milliseconds) {
+    public static void waitForMilliseconds(long milliseconds) {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
+            logger.warn("Thread sleep interrupted", e);
             Thread.currentThread().interrupt();
         }
     }
