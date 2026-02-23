@@ -1,0 +1,38 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# Build
+target/
+*.class
+*.jar
+
+# Test Reports
+allure-results/
+test-output.txt
+test-run-output.txt
+
+# Logs
+*.log
+logs/
+
+# Maven
+.project
+.classpath
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/

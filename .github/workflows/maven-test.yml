@@ -1,0 +1,72 @@
+name: Maven JUnit Selenium Tests
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+      - 'feature/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        java-version: ['17']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run Maven clean verify
+        run: mvn clean verify
+        continue-on-error: true
+
+      - name: Run Maven tests
+        run: mvn test
+        continue-on-error: true
+
+      - name: Generate Allure report
+        if: always()
+        run: mvn allure:report
+        continue-on-error: true
+
+      - name: Upload Allure results artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-results
+          path: target/allure-results
+          retention-days: 30
+
+      - name: Upload Allure report artifact
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: allure-report
+          path: target/site/allure-maven-plugin
+          retention-days: 30
+
+      - name: Upload test reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-reports
+          path: target/surefire-reports
+          retention-days: 30
+
+      - name: Publish test results
+        if: always()
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        with:
+          files: 'target/surefire-reports/**/*.xml'
+          check_name: 'Test Results'
+          comment_mode: always
