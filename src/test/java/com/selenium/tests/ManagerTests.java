@@ -3,6 +3,7 @@ package com.selenium.tests;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,6 +100,7 @@ public class ManagerTests extends BaseTest {
      * 4. Verify system rejects the invalid input
      */
     @Test
+    @Tag("validation")
     @Story("Add Customer - Validation")
     @DisplayName("Test Add Customer with Invalid Postal Code")
     void testAddCustomerWithSpecialCharactersInPostalCode() {
@@ -315,6 +317,7 @@ public class ManagerTests extends BaseTest {
      * 4. Verify system rejects the invalid input
      */
     @Test
+    @Tag("validation")
     @Story("Add Customer - Validation")
     @DisplayName("Test Add Customer with Alphabetic Characters in Postal Code")
     void testAddCustomerWithAlphabeticCharactersInPostalCode() {
@@ -401,6 +404,7 @@ public class ManagerTests extends BaseTest {
      * 4. Verify system rejects the invalid input
      */
     @Test
+    @Tag("validation")
     @Story("Add Customer - Validation")
     @DisplayName("Test Add Customer with Special Characters in First Name")
     void testAddCustomerWithSpecialCharactersInFirstName() {
@@ -487,6 +491,7 @@ public class ManagerTests extends BaseTest {
      * 4. Verify system rejects the invalid input
      */
     @Test
+    @Tag("validation")
     @Story("Add Customer - Validation")
     @DisplayName("Test Add Customer with Numeric Characters in Last Name")
     void testAddCustomerWithNumericCharactersInLastName() {

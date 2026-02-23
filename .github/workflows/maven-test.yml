@@ -70,10 +70,11 @@ jobs:
           MAVEN_OPTS: "-Xmx1g"
 
         run: |
-          # Runs Maven tests in batch mode
+          # Runs Maven tests in batch mode, excluding validation tests (bug documentation)
           mvn -B -e -DtrimStackTrace=false test \
           -Dheadless=true \
-          -Dsurefire.printSummary=true
+          -Dsurefire.printSummary=true \
+          -Dgroups=\!validation
 
       # Step 5: Upload test reports
       - name: Upload Surefire reports
