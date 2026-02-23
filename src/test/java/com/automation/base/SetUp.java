@@ -37,10 +37,24 @@ public class SetUp {
         // Setup WebDriver
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
+        
+        // Check if headless mode is requested (for CI/CD)
+        String headless = System.getProperty("headless", "false");
+        if ("true".equalsIgnoreCase(headless)) {
+            options.addArguments("--headless=new");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--window-size=1920,1080");
+            logger.info("Running in HEADLESS mode for CI/CD");
+        }
+        
         driver = new ChromeDriver(options);
         
         // Maximize window and set timeouts
-        driver.manage().window().maximize();
+        if (!"true".equalsIgnoreCase(headless)) {
+            driver.manage().window().maximize();
+        }
         logger.info("Browser initialized and maximized");
     }
     
