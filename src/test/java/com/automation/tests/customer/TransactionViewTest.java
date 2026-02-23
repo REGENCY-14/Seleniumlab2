@@ -1,0 +1,96 @@
+package com.automation.tests.customer;
+
+import com.automation.base.SetUp;
+import com.automation.pages.*;
+import com.automation.utils.CustomerData;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import io.qameta.allure.Epic;
+import io.qameta.allure.Feature;
+import io.qameta.allure.Step;
+import io.qameta.allure.Story;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * TransactionViewTest - Tests for viewing transaction history
+ */
+@Epic("Customer Operations")
+@Feature("Transaction Viewing")
+@DisplayName("Customer Transaction View Tests")
+public class TransactionViewTest extends SetUp {
+    
+    private static final Logger logger = LoggerFactory.getLogger(TransactionViewTest.class);
+    private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+    
+    @Test
+    @Story("View Transactions")
+    @DisplayName("Test Transaction View Functionality")
+    void testViewTransactions() {
+        logger.info("Starting transaction view test...");
+        navigateToApplication();
+        performCustomerLogin();
+        createTransaction();
+        viewTransactionHistory();
+        verifyTransactionsDisplayed();
+        logger.info("Transaction view test completed successfully");
+    }
+    
+    @Step("Navigate to application")
+    private void navigateToApplication() {
+        logger.info("Step 1: Navigating to base URL");
+        driver.get(BASE_URL);
+        logger.info("✓ Application loaded");
+    }
+    
+    @Step("Perform customer login")
+    private void performCustomerLogin() {
+        logger.info("Step 1: Initializing LoginPage");
+        LoginPage loginPage = new LoginPage(driver);
+        
+        logger.info("Step 2: Clicking Customer Login");
+        loginPage.clickCustomerLogin();
+        waitForPageLoad();
+        
+        logger.info("Step 3: Logging in as {}", CustomerData.TEST_CUSTOMER_NAME);
+        CustomerLoginPage customerLoginPage = new CustomerLoginPage(driver);
+        customerLoginPage.loginAsCustomer(CustomerData.TEST_CUSTOMER_NAME);
+        logger.info("✓ Customer logged in successfully");
+    }
+    
+    @Step("Create test transaction")
+    private void createTransaction() {
+        logger.info("Step 1: Creating deposit transaction for history");
+        DepositPage depositPage = new DepositPage(driver);
+        depositPage.depositAmount(String.valueOf(CustomerData.TEST_TRANSACTION_AMOUNT));
+        
+        logger.info("Step 2: Accepting confirm alert");
+        try {
+            driver.switchTo().alert().accept();
+        } catch (Exception e) {
+            logger.debug("No alert present");
+        }
+    }
+    
+    @Step("View transaction history")
+    private void viewTransactionHistory() {
+        logger.info("Step 1: Accessing Transactions Page");
+        TransactionsPage transactionsPage = new TransactionsPage(driver);
+        transactionsPage.clickTransactionsTab();
+        waitForPageLoad(1500);
+        logger.info("✓ Transaction history loaded");
+    }
+    
+    @Step("Verify transactions displayed")
+    private void verifyTransactionsDisplayed() {
+        logger.info("Step 1: Checking transaction count");
+        TransactionsPage transactionsPage = new TransactionsPage(driver);
+        int transactionCount = transactionsPage.getTransactionCount();
+        
+        logger.info("Step 2: Verifying transactions exist - Count: {}", transactionCount);
+        assertTrue(transactionCount > 0, "Transaction history should display at least one transaction");
+        logger.info("✓ PASSED - Transactions displayed successfully");
+    }
+}
