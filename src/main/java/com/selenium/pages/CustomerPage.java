@@ -1,10 +1,16 @@
 package com.selenium.pages;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * CustomerPage class representing the customer functionality page.
@@ -19,7 +25,9 @@ import org.openqa.selenium.support.ui.Select;
  */
 public class CustomerPage {
 
+    private static final Logger logger = LoggerFactory.getLogger(CustomerPage.class);
     private final WebDriver driver;
+    private final WebDriverWait wait;
 
     // ============ Login Section WebElements ============
 
@@ -86,7 +94,7 @@ public class CustomerPage {
     /**
      * Balance text element displaying current account balance.
      */
-    @FindBy(xpath = "//strong[contains(text(), 'Balance')]/following-sibling::*[1]")
+    @FindBy(xpath = "//strong[@class='ng-binding'][2]")
     private WebElement balanceText;
 
     /**
@@ -97,7 +105,9 @@ public class CustomerPage {
      */
     public CustomerPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         PageFactory.initElements(driver, this);
+        logger.debug("CustomerPage initialized");
     }
 
     /**
@@ -107,9 +117,13 @@ public class CustomerPage {
      * @param customerName the name of the customer to login as
      */
     public void loginCustomer(String customerName) {
+        logger.info("Logging in as customer: {}", customerName);
+        wait.until(ExpectedConditions.visibilityOf(customerDropdown));
         Select customerSelect = new Select(customerDropdown);
         customerSelect.selectByVisibleText(customerName);
+        wait.until(ExpectedConditions.elementToBeClickable(loginButton));
         loginButton.click();
+        logger.info("Customer login successful");
     }
 
     /**
@@ -118,10 +132,19 @@ public class CustomerPage {
      * @param amount the amount to deposit
      */
     public void deposit(double amount) {
+        logger.info("Depositing amount: ${}", amount);
+        wait.until(ExpectedConditions.elementToBeClickable(depositTab));
         depositTab.click();
+        
+        // Wait a bit for Angular to update the form
+        try { Thread.sleep(500); } catch (InterruptedException e) {}
+        
+        wait.until(ExpectedConditions.visibilityOf(depositAmountInput));
         depositAmountInput.clear();
         depositAmountInput.sendKeys(String.valueOf(amount));
+        wait.until(ExpectedConditions.elementToBeClickable(depositSubmitButton));
         depositSubmitButton.click();
+        logger.info("Deposit transaction submitted");
     }
 
     /**
@@ -130,10 +153,19 @@ public class CustomerPage {
      * @param amount the amount to withdraw
      */
     public void withdraw(double amount) {
+        logger.info("Withdrawing amount: ${}", amount);
+        wait.until(ExpectedConditions.elementToBeClickable(withdrawTab));
         withdrawTab.click();
+        
+        // Wait a bit for Angular to update the form
+        try { Thread.sleep(500); } catch (InterruptedException e) {}
+        
+        wait.until(ExpectedConditions.visibilityOf(withdrawAmountInput));
         withdrawAmountInput.clear();
         withdrawAmountInput.sendKeys(String.valueOf(amount));
+        wait.until(ExpectedConditions.elementToBeClickable(withdrawSubmitButton));
         withdrawSubmitButton.click();
+        logger.info("Withdrawal transaction submitted");
     }
 
     /**
@@ -142,14 +174,20 @@ public class CustomerPage {
      * @return the current balance as a String
      */
     public String getBalance() {
-        return balanceText.getText();
+        wait.until(ExpectedConditions.visibilityOf(balanceText));
+        String balance = balanceText.getText();
+        logger.info("Current balance: {}", balance);
+        return balance;
     }
 
     /**
      * View the transaction history by clicking the transactions tab.
      */
     public void viewTransactions() {
+        logger.info("Viewing transaction history");
+        wait.until(ExpectedConditions.elementToBeClickable(transactionsTab));
         transactionsTab.click();
+        logger.debug("Transactions tab clicked");
     }
 
     /**

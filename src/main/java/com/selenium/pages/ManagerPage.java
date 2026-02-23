@@ -1,10 +1,16 @@
 package com.selenium.pages;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * ManagerPage class representing the bank manager functionality page.
@@ -19,7 +25,29 @@ import org.openqa.selenium.support.ui.Select;
  */
 public class ManagerPage {
 
+    private static final Logger logger = LoggerFactory.getLogger(ManagerPage.class);
     private final WebDriver driver;
+    private final WebDriverWait wait;
+
+    // ============ Navigation Tabs ============
+
+    /**
+     * Add Customer tab button to access the add customer form.
+     */
+    @FindBy(xpath = "//button[contains(text(), 'Add Customer')][@ng-class]")
+    private WebElement addCustomerTab;
+
+    /**
+     * Open Account tab button to access the create account form.
+     */
+    @FindBy(xpath = "//button[contains(text(), 'Open Account')][@ng-class]")
+    private WebElement openAccountTab;
+
+    /**
+     * Customers tab to view and manage existing customers.
+     */
+    @FindBy(xpath = "//button[contains(text(), 'Customers')]")
+    private WebElement customersTab;
 
     // ============ Add Customer Section WebElements ============
 
@@ -42,9 +70,9 @@ public class ManagerPage {
     private WebElement postCodeInput;
 
     /**
-     * Add Customer button to submit the customer creation form.
+     * Add Customer form submit button.
      */
-    @FindBy(xpath = "//button[contains(text(), 'Add Customer')]")
+    @FindBy(xpath = "//form//button[contains(text(), 'Add Customer')]")
     private WebElement addCustomerButton;
 
     // ============ Create Account Section WebElements ============
@@ -58,7 +86,7 @@ public class ManagerPage {
     /**
      * Currency dropdown for selecting currency when creating an account.
      */
-    @FindBy(id = "currencySelect")
+    @FindBy(id = "currency")
     private WebElement currencyDropdown;
 
     /**
@@ -68,12 +96,6 @@ public class ManagerPage {
     private WebElement createAccountButton;
 
     // ============ Delete Account Section WebElements ============
-
-    /**
-     * Customers tab to view and manage existing customers.
-     */
-    @FindBy(xpath = "//button[contains(text(), 'Customers')]")
-    private WebElement customersTab;
 
     /**
      * Delete button for removing a customer (dynamic locator used in methods).
@@ -89,7 +111,9 @@ public class ManagerPage {
      */
     public ManagerPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         PageFactory.initElements(driver, this);
+        logger.debug("ManagerPage initialized");
     }
 
     /**
@@ -100,6 +124,12 @@ public class ManagerPage {
      * @param postCode  the customer's post code
      */
     public void addCustomer(String firstName, String lastName, String postCode) {
+        logger.info("Adding customer: {} {} ({})", firstName, lastName, postCode);
+        // Click Add Customer tab first
+        wait.until(ExpectedConditions.elementToBeClickable(addCustomerTab));
+        addCustomerTab.click();
+        
+        wait.until(ExpectedConditions.visibilityOf(firstNameInput));
         firstNameInput.clear();
         firstNameInput.sendKeys(firstName);
 
@@ -109,7 +139,9 @@ public class ManagerPage {
         postCodeInput.clear();
         postCodeInput.sendKeys(postCode);
 
+        wait.until(ExpectedConditions.elementToBeClickable(addCustomerButton));
         addCustomerButton.click();
+        logger.info("Add customer form submitted");
     }
 
     /**
@@ -119,13 +151,25 @@ public class ManagerPage {
      * @param currency     the currency to select for the account
      */
     public void createAccount(String customerName, String currency) {
+        logger.info("Creating account for customer: {} with currency: {}", customerName, currency);
+        // Click Open Account tab first
+        wait.until(ExpectedConditions.elementToBeClickable(openAccountTab));
+        openAccountTab.click();
+        
+        // Wait for Angular to load the form - increased wait time
+        try { Thread.sleep(1500); } catch (InterruptedException e) {}
+        
+        wait.until(ExpectedConditions.visibilityOf(customerDropdown));
         Select customerSelect = new Select(customerDropdown);
         customerSelect.selectByVisibleText(customerName);
 
+        wait.until(ExpectedConditions.visibilityOf(currencyDropdown));
         Select currencySelect = new Select(currencyDropdown);
         currencySelect.selectByVisibleText(currency);
 
+        wait.until(ExpectedConditions.elementToBeClickable(createAccountButton));
         createAccountButton.click();
+        logger.info("Account creation submitted");
     }
 
     /**
@@ -135,12 +179,16 @@ public class ManagerPage {
      * @param customerName the name of the customer to delete
      */
     public void deleteCustomer(String customerName) {
+        logger.info("Deleting customer: {}", customerName);
         // Click on customers tab to ensure we're viewing the customer list
+        wait.until(ExpectedConditions.elementToBeClickable(customersTab));
         customersTab.click();
 
         // Find and click the delete button for the specific customer
         // This implementation assumes the delete button is visible after clicking customersTab
+        wait.until(ExpectedConditions.elementToBeClickable(deleteButton));
         deleteButton.click();
+        logger.info("Customer deletion initiated");
     }
 
     /**

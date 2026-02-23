@@ -1,9 +1,15 @@
 package com.selenium.pages;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * LoginPage class representing the login page of the application.
@@ -18,7 +24,9 @@ import org.openqa.selenium.support.PageFactory;
  */
 public class LoginPage {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoginPage.class);
     private final WebDriver driver;
+    private final WebDriverWait wait;
 
     /**
      * WebElement for Bank Manager Login button.
@@ -42,7 +50,9 @@ public class LoginPage {
      */
     public LoginPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         PageFactory.initElements(driver, this);
+        logger.debug("LoginPage initialized");
     }
 
     /**
@@ -50,7 +60,10 @@ public class LoginPage {
      * Navigates to the Bank Manager login page/form.
      */
     public void clickBankManagerLogin() {
+        logger.info("Clicking Bank Manager Login");
+        wait.until(ExpectedConditions.elementToBeClickable(bankManagerLoginButton));
         bankManagerLoginButton.click();
+        logger.info("Navigated to Bank Manager page");
     }
 
     /**
@@ -58,7 +71,10 @@ public class LoginPage {
      * Navigates to the Customer login page/form.
      */
     public void clickCustomerLogin() {
+        logger.info("Clicking Customer Login");
+        wait.until(ExpectedConditions.elementToBeClickable(customerLoginButton));
         customerLoginButton.click();
+        logger.info("Navigated to Customer Login page");
     }
 
     /**
