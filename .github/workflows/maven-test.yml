@@ -74,7 +74,7 @@ jobs:
           mvn -B -e -DtrimStackTrace=false test \
           -Dheadless=true \
           -Dsurefire.printSummary=true \
-          -Dgroups=\!validation
+          -DexcludeTags=validation
 
       # Step 5: Upload test reports
       - name: Upload Surefire reports

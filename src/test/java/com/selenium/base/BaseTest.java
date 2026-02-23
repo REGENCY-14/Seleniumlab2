@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.TestWatcher;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,8 +55,20 @@ public class BaseTest {
         
         logger.debug("Setting up ChromeDriver...");
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        driver.manage().window().maximize();
+        ChromeOptions options = new ChromeOptions();
+        String headless = System.getProperty("headless", "false");
+        if ("true".equalsIgnoreCase(headless)) {
+            options.addArguments("--headless=new");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--window-size=1920,1080");
+            logger.info("Running in HEADLESS mode for CI/CD");
+        }
+        driver = new ChromeDriver(options);
+        if (!"true".equalsIgnoreCase(headless)) {
+            driver.manage().window().maximize();
+        }
         logger.info("Browser initialized and maximized");
         
         // Set implicit wait for element location
