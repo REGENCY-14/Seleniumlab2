@@ -223,15 +223,26 @@ jobs:
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
 
-          subject: "CI Success"
+          subject: "✅ CI Success - ${{ github.repository }}"
 
           to: ${{ secrets.SMTP_TO }}
 
           from: selenium-lab-ci@github.com
 
-          body: |
-            CI Success
-            Tests Passed: ${{ steps.test_meta.outputs.tests_passed }}
+          html_body: |
+            <h2>✅ CI Build Successful</h2>
+            <table style="border-collapse: collapse; width: 100%;">
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Repository:</strong></td><td style="padding: 8px; border: 1px solid #ddd;"><a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a></td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Author:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ github.event.pull_request.user.login || github.actor }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Branch:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.source_branch }} → ${{ steps.test_meta.outputs.target_branch }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Commit Message:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.commit_message }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Commit SHA:</strong></td><td style="padding: 8px; border: 1px solid #ddd;"><a href="https://github.com/${{ github.repository }}/commit/${{ steps.test_meta.outputs.commit_sha }}">${{ steps.test_meta.outputs.commit_sha_short }}</a></td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Commit Author:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.commit_author }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Tests Passed:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.tests_passed }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Overall Test Status:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">✅ All tests passed</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Workflow Run:</strong></td><td style="padding: 8px; border: 1px solid #ddd;"><a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">View Details</a></td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Timestamp:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.timestamp }}</td></tr>
+            </table>
 
       # Step 11: Send email notification on failure
       - name: Email notification on failure
@@ -248,12 +259,24 @@ jobs:
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
 
-          subject: "CI Failed"
+          subject: "❌ CI Failed - ${{ github.repository }}"
 
           to: ${{ secrets.SMTP_TO }}
 
           from: selenium-lab-ci@github.com
 
-          body: |
-            CI Failed
-            Tests Failed: ${{ steps.test_meta.outputs.tests_failed }}
+          html_body: |
+            <h2>❌ CI Build Failed</h2>
+            <table style="border-collapse: collapse; width: 100%;">
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Repository:</strong></td><td style="padding: 8px; border: 1px solid #ddd;"><a href="https://github.com/${{ github.repository }}">${{ github.repository }}</a></td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Author:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ github.event.pull_request.user.login || github.actor }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Branch:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.source_branch }} → ${{ steps.test_meta.outputs.target_branch }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Commit Message:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.commit_message }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Commit SHA:</strong></td><td style="padding: 8px; border: 1px solid #ddd;"><a href="https://github.com/${{ github.repository }}/commit/${{ steps.test_meta.outputs.commit_sha }}">${{ steps.test_meta.outputs.commit_sha_short }}</a></td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Commit Author:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.commit_author }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Tests Passed:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.tests_passed }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Tests Failed:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.tests_failed }}</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Overall Test Status:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">❌ Tests failed</td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Workflow Run:</strong></td><td style="padding: 8px; border: 1px solid #ddd;"><a href="https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}">View Details</a></td></tr>
+              <tr><td style="padding: 8px; border: 1px solid #ddd;"><strong>Timestamp:</strong></td><td style="padding: 8px; border: 1px solid #ddd;">${{ steps.test_meta.outputs.timestamp }}</td></tr>
+            </table>
