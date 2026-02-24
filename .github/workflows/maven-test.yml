@@ -166,6 +166,15 @@ jobs:
 
           PY
 
+      # Step 7: Fail the job if tests failed
+      - name: Fail job if tests failed
+
+        # Runs only if test step failed
+        if: steps.test_step.outcome == 'failure'
+
+        # Forces job to fail
+        run: exit 1
+
       # Step 8: Send Slack notification on success
       - name: Slack notification on success
 
