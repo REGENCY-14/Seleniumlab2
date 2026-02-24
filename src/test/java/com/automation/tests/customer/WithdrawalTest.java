@@ -11,8 +11,8 @@ import com.automation.pages.CustomerDashboardPage;
 import com.automation.pages.CustomerLoginPage;
 import com.automation.pages.LoginPage;
 import com.automation.pages.WithdrawalPage;
-import com.automation.utils.TestDataReader;
 import com.automation.utils.ConfigReader;
+import com.automation.utils.TestDataReader;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;

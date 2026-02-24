@@ -220,6 +220,7 @@ jobs:
         with:
           server_address: ${{ secrets.SMTP_SERVER }}
           server_port: ${{ secrets.SMTP_PORT }}
+          secure: false
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
 
@@ -227,7 +228,7 @@ jobs:
 
           to: ${{ secrets.SMTP_TO }}
 
-          from: selenium-lab-ci@github.com
+          from: ${{ secrets.SMTP_FROM }}
 
           html_body: |
             <h2>✅ CI Build Successful</h2>
@@ -256,6 +257,7 @@ jobs:
         with:
           server_address: ${{ secrets.SMTP_SERVER }}
           server_port: ${{ secrets.SMTP_PORT }}
+          secure: false
           username: ${{ secrets.SMTP_USERNAME }}
           password: ${{ secrets.SMTP_PASSWORD }}
 
@@ -263,7 +265,7 @@ jobs:
 
           to: ${{ secrets.SMTP_TO }}
 
-          from: selenium-lab-ci@github.com
+          from: ${{ secrets.SMTP_FROM }}
 
           html_body: |
             <h2>❌ CI Build Failed</h2>
