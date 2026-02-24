@@ -9,6 +9,7 @@ import com.automation.base.SetUp;
 import com.automation.pages.LoginPage;
 import com.automation.pages.OpenAccountPage;
 import com.automation.utils.TestDataReader;
+import com.automation.utils.ConfigReader;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -24,8 +25,12 @@ import io.qameta.allure.Story;
 public class OpenAccountTest extends SetUp {
     
     private static final Logger logger = LoggerFactory.getLogger(OpenAccountTest.class);
-    private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+    private static final ConfigReader configReader = ConfigReader.getInstance();
     private static final TestDataReader testData = TestDataReader.getInstance();
+    
+    // Page Objects
+    private LoginPage loginPage;
+    private OpenAccountPage openAccountPage;
     
     @Test
     @Story("Open Account")
@@ -42,26 +47,24 @@ public class OpenAccountTest extends SetUp {
     @Step("Navigate to application")
     private void navigateToApplication() {
         logger.info("Step 1: Navigating to base URL");
-        driver.get(BASE_URL);
+        driver.get(configReader.getBaseUrl());
         logger.info("✓ Application loaded");
+        
+        // Initialize page objects
+        loginPage = new LoginPage(driver);
+        openAccountPage = new OpenAccountPage(driver);
     }
     
     @Step("Perform manager login")
     private void performManagerLogin() {
-        logger.info("Step 1: Initializing LoginPage");
-        LoginPage loginPage = new LoginPage(driver);
-        
-        logger.info("Step 2: Clicking Bank Manager Login");
+        logger.info("Step 1: Clicking Bank Manager Login");
         loginPage.clickBankManagerLogin();
         logger.info("✓ Manager logged in successfully");
     }
     
     @Step("Open new account")
     private void performOpenAccount() {
-        logger.info("Step 1: Accessing Open Account Page");
-        OpenAccountPage openAccountPage = new OpenAccountPage(driver);
-        
-        logger.info("Step 2: Creating account for {} in {}", 
+        logger.info("Step 1: Creating account for {} in {}", 
                    testData.getTestCustomerName(), 
                    testData.getDefaultCurrency());
         openAccountPage.createAccount(testData.getTestCustomerName(), 

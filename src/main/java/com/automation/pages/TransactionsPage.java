@@ -1,11 +1,14 @@
 package com.automation.pages;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +18,8 @@ import org.slf4j.LoggerFactory;
 public class TransactionsPage {
     
     private static final Logger logger = LoggerFactory.getLogger(TransactionsPage.class);
-    private WebDriver driver;
+    private final WebDriver driver;
+    private final WebDriverWait wait;
     
     @FindBy(xpath = "//button[contains(text(), 'Transactions')]")
     private WebElement transactionsTab;
@@ -25,11 +29,13 @@ public class TransactionsPage {
     
     public TransactionsPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver, Duration.ofSeconds(15));
         PageFactory.initElements(driver, this);
     }
     
     public void clickTransactionsTab() {
         logger.info("Clicking Transactions tab");
+        wait.until(ExpectedConditions.elementToBeClickable(transactionsTab));
         transactionsTab.click();
     }
     

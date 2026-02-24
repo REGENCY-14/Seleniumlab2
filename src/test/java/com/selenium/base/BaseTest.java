@@ -1,6 +1,8 @@
 package com.selenium.base;
 
 import java.time.Duration;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,8 +56,20 @@ public class BaseTest {
         logger.info("========================================");
         
         logger.debug("Setting up ChromeDriver...");
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().clearDriverCache().setup();
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("--no-first-run");
+        options.addArguments("--no-default-browser-check");
+        options.addArguments("--disable-dev-shm-usage");
+        try {
+            Path profileDir = Files.createTempDirectory("chrome-profile-");
+            options.addArguments("--user-data-dir=" + profileDir.toAbsolutePath());
+        } catch (Exception e) {
+            logger.warn("Unable to create temp Chrome profile directory", e);
+        }
         String headless = System.getProperty("headless", "false");
         if ("true".equalsIgnoreCase(headless)) {
             options.addArguments("--headless=new");

@@ -8,6 +8,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.qameta.allure.Step;
@@ -35,8 +37,20 @@ public class SetUp {
         logger.info("==============================================================================");
         
         // Setup WebDriver
-        WebDriverManager.chromedriver().setup();
+        WebDriverManager.chromedriver().clearDriverCache().setup();
         ChromeOptions options = new ChromeOptions();
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--disable-extensions");
+        options.addArguments("--disable-popup-blocking");
+        options.addArguments("--no-first-run");
+        options.addArguments("--no-default-browser-check");
+        options.addArguments("--disable-dev-shm-usage");
+        try {
+            Path profileDir = Files.createTempDirectory("chrome-profile-");
+            options.addArguments("--user-data-dir=" + profileDir.toAbsolutePath());
+        } catch (Exception e) {
+            logger.warn("Unable to create temp Chrome profile directory", e);
+        }
         
         // Check if headless mode is requested (for CI/CD)
         String headless = System.getProperty("headless", "false");

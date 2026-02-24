@@ -9,6 +9,7 @@ import com.automation.base.SetUp;
 import com.automation.pages.AddCustomerPage;
 import com.automation.pages.LoginPage;
 import com.automation.utils.TestDataReader;
+import com.automation.utils.ConfigReader;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -24,8 +25,12 @@ import io.qameta.allure.Story;
 public class AddCustomerTest extends SetUp {
     
     private static final Logger logger = LoggerFactory.getLogger(AddCustomerTest.class);
-    private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+    private static final ConfigReader configReader = ConfigReader.getInstance();
     private static final TestDataReader testData = TestDataReader.getInstance();
+    
+    // Page Objects
+    private LoginPage loginPage;
+    private AddCustomerPage addCustomerPage;
     
     @Test
     @Story("Add Customer")
@@ -42,26 +47,24 @@ public class AddCustomerTest extends SetUp {
     @Step("Navigate to application")
     private void navigateToApplication() {
         logger.info("Step 1: Navigating to base URL");
-        driver.get(BASE_URL);
+        driver.get(configReader.getBaseUrl());
         logger.info("✓ Application loaded");
+        
+        // Initialize page objects
+        loginPage = new LoginPage(driver);
+        addCustomerPage = new AddCustomerPage(driver);
     }
     
     @Step("Perform manager login")
     private void performManagerLogin() {
-        logger.info("Step 1: Initializing LoginPage");
-        LoginPage loginPage = new LoginPage(driver);
-        
-        logger.info("Step 2: Clicking Bank Manager Login");
+        logger.info("Step 1: Clicking Bank Manager Login");
         loginPage.clickBankManagerLogin();
         logger.info("✓ Manager logged in successfully");
     }
     
     @Step("Add new customer")
     private void performAddCustomer() {
-        logger.info("Step 1: Accessing Add Customer Page");
-        AddCustomerPage addCustomerPage = new AddCustomerPage(driver);
-        
-        logger.info("Step 2: Adding customer - {} {}", 
+        logger.info("Step 1: Adding customer - {} {}", 
                    testData.getNewCustomerFirstName(), 
                    testData.getNewCustomerLastName());
         addCustomerPage.addCustomer(testData.getNewCustomerFirstName(),

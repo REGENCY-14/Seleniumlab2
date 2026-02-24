@@ -13,6 +13,7 @@ import com.automation.pages.CustomerLoginPage;
 import com.automation.pages.DepositPage;
 import com.automation.pages.LoginPage;
 import com.automation.utils.TestDataReader;
+import com.automation.utils.ConfigReader;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -28,8 +29,14 @@ import io.qameta.allure.Story;
 public class DepositTest extends SetUp {
     
     private static final Logger logger = LoggerFactory.getLogger(DepositTest.class);
-    private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+    private static final ConfigReader configReader = ConfigReader.getInstance();
     private static final TestDataReader testData = TestDataReader.getInstance();
+    
+    // Page Objects
+    private LoginPage loginPage;
+    private CustomerLoginPage customerLoginPage;
+    private DepositPage depositPage;
+    private CustomerDashboardPage dashboardPage;
     
     @Test
     @Story("Deposit Money")
@@ -46,31 +53,30 @@ public class DepositTest extends SetUp {
     @Step("Navigate to application")
     private void navigateToApplication() {
         logger.info("Step 1: Navigating to base URL");
-        driver.get(BASE_URL);
+        driver.get(configReader.getBaseUrl());
         logger.info("✓ Application loaded");
+        
+        // Initialize page objects
+        loginPage = new LoginPage(driver);
+        customerLoginPage = new CustomerLoginPage(driver);
+        depositPage = new DepositPage(driver);
+        dashboardPage = new CustomerDashboardPage(driver);
     }
     
     @Step("Perform customer login")
     private void performCustomerLogin() {
-        logger.info("Step 1: Initializing LoginPage");
-        LoginPage loginPage = new LoginPage(driver);
-        
-        logger.info("Step 2: Clicking Customer Login");
+        logger.info("Step 1: Clicking Customer Login");
         loginPage.clickCustomerLogin();
         waitForPageLoad();
         
-        logger.info("Step 3: Logging in as {}", testData.getTestCustomerName());
-        CustomerLoginPage customerLoginPage = new CustomerLoginPage(driver);
+        logger.info("Step 2: Logging in as {}", testData.getTestCustomerName());
         customerLoginPage.loginAsCustomer(testData.getTestCustomerName());
         logger.info("✓ Customer logged in successfully");
     }
     
     @Step("Perform deposit")
     private void performDeposit() {
-        logger.info("Step 1: Accessing Deposit Page");
-        DepositPage depositPage = new DepositPage(driver);
-        
-        logger.info("Step 2: Depositing amount: ${}", testData.getDepositAmount());
+        logger.info("Step 1: Depositing amount: ${}", testData.getDepositAmount());
         depositPage.depositAmount(String.valueOf(testData.getDepositAmount()));
         logger.info("✓ Deposit submitted");
     }
@@ -81,7 +87,6 @@ public class DepositTest extends SetUp {
         PageHelper.acceptAlert(driver);
         
         logger.info("Step 2: Verifying balance updated");
-        CustomerDashboardPage dashboardPage = new CustomerDashboardPage(driver);
         String balance = dashboardPage.getBalance();
         
         logger.info("Step 3: Asserting balance is displayed");

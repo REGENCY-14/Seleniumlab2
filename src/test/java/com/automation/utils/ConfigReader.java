@@ -37,7 +37,7 @@ public class ConfigReader {
     }
     
     public String getBaseUrl() {
-        return properties.getProperty("base.url", "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
+        return properties.getProperty("baseUrl", "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login");
     }
     
     public String getProperty(String key) {

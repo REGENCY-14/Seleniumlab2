@@ -12,6 +12,7 @@ import com.automation.pages.CustomerLoginPage;
 import com.automation.pages.LoginPage;
 import com.automation.pages.WithdrawalPage;
 import com.automation.utils.TestDataReader;
+import com.automation.utils.ConfigReader;
 
 import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
@@ -27,8 +28,14 @@ import io.qameta.allure.Story;
 public class WithdrawalTest extends SetUp {
     
     private static final Logger logger = LoggerFactory.getLogger(WithdrawalTest.class);
-    private static final String BASE_URL = "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login";
+    private static final ConfigReader configReader = ConfigReader.getInstance();
     private static final TestDataReader testData = TestDataReader.getInstance();
+    
+    // Page Objects
+    private LoginPage loginPage;
+    private CustomerLoginPage customerLoginPage;
+    private WithdrawalPage withdrawalPage;
+    private CustomerDashboardPage dashboardPage;
     
     @Test
     @Story("Withdraw Money")
@@ -45,31 +52,30 @@ public class WithdrawalTest extends SetUp {
     @Step("Navigate to application")
     private void navigateToApplication() {
         logger.info("Step 1: Navigating to base URL");
-        driver.get(BASE_URL);
+        driver.get(configReader.getBaseUrl());
         logger.info("✓ Application loaded");
+        
+        // Initialize page objects
+        loginPage = new LoginPage(driver);
+        customerLoginPage = new CustomerLoginPage(driver);
+        withdrawalPage = new WithdrawalPage(driver);
+        dashboardPage = new CustomerDashboardPage(driver);
     }
     
     @Step("Perform customer login")
     private void performCustomerLogin() {
-        logger.info("Step 1: Initializing LoginPage");
-        LoginPage loginPage = new LoginPage(driver);
-        
-        logger.info("Step 2: Clicking Customer Login");
+        logger.info("Step 1: Clicking Customer Login");
         loginPage.clickCustomerLogin();
         waitForPageLoad();
         
-        logger.info("Step 3: Logging in as {}", testData.getTestCustomerName());
-        CustomerLoginPage customerLoginPage = new CustomerLoginPage(driver);
+        logger.info("Step 2: Logging in as {}", testData.getTestCustomerName());
         customerLoginPage.loginAsCustomer(testData.getTestCustomerName());
         logger.info("✓ Customer logged in successfully");
     }
     
     @Step("Perform withdrawal")
     private void performWithdrawal() {
-        logger.info("Step 1: Accessing Withdrawal Page");
-        WithdrawalPage withdrawalPage = new WithdrawalPage(driver);
-        
-        logger.info("Step 2: Withdrawing amount: ${}", testData.getWithdrawalAmount());
+        logger.info("Step 1: Withdrawing amount: ${}", testData.getWithdrawalAmount());
         withdrawalPage.withdrawAmount(String.valueOf(testData.getWithdrawalAmount()));
         logger.info("✓ Withdrawal submitted");
     }
@@ -84,7 +90,6 @@ public class WithdrawalTest extends SetUp {
         }
         
         logger.info("Step 2: Verifying balance updated");
-        CustomerDashboardPage dashboardPage = new CustomerDashboardPage(driver);
         String balance = dashboardPage.getBalance();
         
         logger.info("Step 3: Asserting balance is displayed");
