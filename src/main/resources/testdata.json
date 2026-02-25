@@ -1,4 +1,7 @@
 {
+  "config": {
+    "baseUrl": "https://www.globalsqa.com/angularJs-protractor/BankingProject/#/login"
+  },
   "customers": [
     {
       "id": 1,

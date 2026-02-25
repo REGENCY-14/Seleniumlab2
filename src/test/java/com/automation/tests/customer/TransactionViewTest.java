@@ -7,10 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.automation.base.SetUp;
-import com.automation.pages.CustomerLoginPage;
-import com.automation.pages.DepositPage;
-import com.automation.pages.LoginPage;
-import com.automation.pages.TransactionsPage;
 import com.automation.utils.ConfigReader;
 import com.automation.utils.TestDataReader;
 
@@ -31,12 +27,6 @@ public class TransactionViewTest extends SetUp {
     private static final ConfigReader configReader = ConfigReader.getInstance();
     private static final TestDataReader testData = TestDataReader.getInstance();
     
-    // Page Objects
-    private LoginPage loginPage;
-    private CustomerLoginPage customerLoginPage;
-    private DepositPage depositPage;
-    private TransactionsPage transactionsPage;
-    
     @Test
     @Story("View Transactions")
     @DisplayName("Test Transaction View Functionality")
@@ -55,12 +45,6 @@ public class TransactionViewTest extends SetUp {
         logger.info("Step 1: Navigating to base URL");
         driver.get(configReader.getBaseUrl());
         logger.info("✓ Application loaded");
-        
-        // Initialize page objects
-        loginPage = new LoginPage(driver);
-        customerLoginPage = new CustomerLoginPage(driver);
-        depositPage = new DepositPage(driver);
-        transactionsPage = new TransactionsPage(driver);
     }
     
     @Step("Perform customer login")
@@ -106,5 +90,25 @@ public class TransactionViewTest extends SetUp {
         logger.info("Step 2: Verifying transactions exist - Count: {}", transactionCount);
         assertTrue(transactionCount > 0, "Transaction history should display at least one transaction");
         logger.info("✓ PASSED - Transactions displayed successfully");
+    }
+    
+    /**
+     * Tests viewing transaction details.
+     */
+    @Test
+    @Story("View Transactions")
+    @DisplayName("Test View Transaction Details")
+    void testViewTransactionDetails() {
+        logger.info("Starting view transaction details test...");
+        navigateToApplication();
+        performCustomerLogin();
+        createTransaction();
+        viewTransactionHistory();
+        
+        logger.info("Verifying transactions are visible");
+        assertTrue(transactionsPage.hasTransactions(), "Transactions should be visible");
+        
+        logger.info("✓ PASSED - Transaction details viewed");
+        logger.info("View transaction details test completed");
     }
 }

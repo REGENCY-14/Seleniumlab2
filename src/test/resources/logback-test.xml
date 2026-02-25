@@ -10,6 +10,7 @@
     <!-- File Appender for all logs -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>target/logs/test-execution.log</file>
+        <prudent>true</prudent>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>target/logs/test-execution-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
@@ -22,6 +23,7 @@
     <!-- File Appender for test results only -->
     <appender name="TEST_RESULTS" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>target/logs/test-results.log</file>
+        <prudent>true</prudent>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>target/logs/test-results-%d{yyyy-MM-dd}.log</fileNamePattern>
             <maxHistory>30</maxHistory>
@@ -37,20 +39,20 @@
     </appender>
 
     <!-- Logger for test classes -->
-    <logger name="com.selenium.tests" level="INFO" additivity="false">
+    <logger name="com.automation.tests" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="TEST_RESULTS"/>
     </logger>
 
     <!-- Logger for page objects -->
-    <logger name="com.selenium.pages" level="INFO" additivity="false">
+    <logger name="com.automation.pages" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
     </logger>
 
     <!-- Logger for base test -->
-    <logger name="com.selenium.base" level="INFO" additivity="false">
+    <logger name="com.automation.base" level="INFO" additivity="false">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="FILE"/>
         <appender-ref ref="TEST_RESULTS"/>

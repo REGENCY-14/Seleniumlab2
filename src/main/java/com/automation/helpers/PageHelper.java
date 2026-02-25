@@ -17,7 +17,11 @@ public class PageHelper {
     private static final int TIMEOUT = 10;
     
     /**
-     * Wait for element to be visible
+     * Waits for the specified element to be visible on the page.
+     * Uses a default timeout of 10 seconds.
+     *
+     * @param driver  The WebDriver instance.
+     * @param element The WebElement to wait for.
      */
     public static void waitForElementVisible(WebDriver driver, WebElement element) {
         try {
@@ -30,7 +34,11 @@ public class PageHelper {
     }
     
     /**
-     * Wait for element to be clickable
+     * Waits for the specified element to be clickable.
+     * Uses a default timeout of 10 seconds.
+     *
+     * @param driver  The WebDriver instance.
+     * @param element The WebElement to wait for.
      */
     public static void waitForElementClickable(WebDriver driver, WebElement element) {
         try {
@@ -43,7 +51,11 @@ public class PageHelper {
     }
     
     /**
-     * Handle alerts
+     * Retrieves the text from an alert dialog if one is present.
+     * Waits up to 5 seconds for the alert to appear.
+     *
+     * @param driver The WebDriver instance.
+     * @return The text of the alert, or null if no alert is present.
      */
     public static String getAlertText(WebDriver driver) {
         try {
@@ -59,7 +71,10 @@ public class PageHelper {
     }
     
     /**
-     * Accept alert
+     * Accepts the currently displayed alert dialog.
+     * If no alert is present, the exception is logged.
+     *
+     * @param driver The WebDriver instance.
      */
     public static void acceptAlert(WebDriver driver) {
         try {
@@ -71,7 +86,10 @@ public class PageHelper {
     }
     
     /**
-     * General wait
+     * Pauses the execution for a specified number of milliseconds.
+     * This is a wrapper around Thread.sleep().
+     *
+     * @param milliseconds The number of milliseconds to wait.
      */
     public static void waitForMilliseconds(long milliseconds) {
         try {

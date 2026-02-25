@@ -37,6 +37,11 @@ public class TestDataReader {
         return instance;
     }
     
+    // Configuration Data
+    public String getBaseUrl() {
+        return getStringValue("config.baseUrl");
+    }
+    
     // Valid Customer Data
     public String getTestCustomerName() {
         return getStringValue("validCustomers.testCustomer");
